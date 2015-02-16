@@ -7,10 +7,7 @@ RUN deps=' \
         wget \
         unzip \
     ' \
-    && apt-get -y update \
-    && apt-get install -y --no-install-recommends $deps \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get autoremove -y
+    && apt-get update && apt-get install -y --no-install-recommends $deps && rm -rf /var/lib/apt/lists/*
 
 # Copy entrypoint inside container.
 COPY entrypoint.sh /entrypoint.sh
