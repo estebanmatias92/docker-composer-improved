@@ -55,4 +55,4 @@ if [ ! -s composer.json -a -n "$PROJECT_SOURCE" -a -n "$SOURCE_TYPE" ]; then
 fi
 
 # Execute composer anyway.
-exec /usr/local/bin/composer --ansi "$@"
+exec composer --ansi "$@"
