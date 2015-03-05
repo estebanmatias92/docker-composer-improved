@@ -28,7 +28,14 @@ if [ ! -s composer.json -a -n "$PROJECT_SOURCE" -a -n "$SOURCE_TYPE" ]; then
             && rm /tmp/project.zip
             ;;
         composer)
+            mkdir tmp-$HOSTNAME
+            cd tmp-$HOSTNAME
+
             composer --ansi create-project --no-install --no-interaction $PROJECT_FLAGS $PROJECT_SOURCE $PWD $PROJECT_VERSION
+
+            cd -
+            cp -Rf tmp-$HOSTNAME/* ./
+            rm -rf tmp-$HOSTNAME
             ;;
         *)
             echo "Invalid SOURCE_TYPE !!!" \
@@ -50,7 +57,7 @@ if [ ! -s composer.json -a -n "$PROJECT_SOURCE" -a -n "$SOURCE_TYPE" ]; then
         mv $directory/* $PWD \
         && rm -rf $directory
     fi
-
+    
     composer --ansi install $INSTALL_FLAGS
 fi
 
