@@ -59,6 +59,9 @@ if [ ! -s composer.json -a -n "$PROJECT_SOURCE" -a -n "$SOURCE_TYPE" ]; then
     fi
     
     composer --ansi install $INSTALL_FLAGS
+    
+    # give non-root permissions
+    chown -R 1000:users .
 fi
 
 # Execute composer anyway.
