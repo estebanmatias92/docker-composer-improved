@@ -5,8 +5,13 @@ set -e
 # Download and create the first time, a new composer project with its dependencies.
 if [ ! -s composer.json -a -n "$PROJECT_SOURCE" -a -n "$SOURCE_TYPE" ]; then
 
+    # Move to temporary folder to avoid overwriting conflicts
+    mkdir tmp-$HOSTNAME
+    cd tmp-$HOSTNAME
+
     PWD=$(pwd)
     
+    # Create the project
     case $SOURCE_TYPE in
         git)
             git clone $PROJECT_FLAGS $PROJECT_SOURCE $PWD
@@ -28,14 +33,7 @@ if [ ! -s composer.json -a -n "$PROJECT_SOURCE" -a -n "$SOURCE_TYPE" ]; then
             && rm /tmp/project.zip
             ;;
         composer)
-            mkdir tmp-$HOSTNAME
-            cd tmp-$HOSTNAME
-
             composer --ansi create-project --no-install --no-interaction $PROJECT_FLAGS $PROJECT_SOURCE $PWD $PROJECT_VERSION
-
-            cd -
-            cp -Rf tmp-$HOSTNAME/* ./
-            rm -rf tmp-$HOSTNAME
             ;;
         *)
             echo "Invalid SOURCE_TYPE !!!" \
@@ -52,12 +50,18 @@ if [ ! -s composer.json -a -n "$PROJECT_SOURCE" -a -n "$SOURCE_TYPE" ]; then
     esac
 
     # Strip first-level folder if exists
-    directory=$(find $PWD -name composer.json 2>/dev/null | head -n 1 | xargs dirname)
-    if [ "$directory" != "$PWD" ]; then
-        mv $directory/* $PWD \
-        && rm -rf $directory
+    jsonDirectory=$(find $PWD -name composer.json 2>/dev/null | head -n 1 | xargs dirname)
+    if [ "$jsonDirectory" != "$PWD" ]; then
+        cp -Rf $jsonDirectory/* $PWD \
+        && rm -rf $jsonDirectory
     fi
-    
+
+    # Return to the root project folder and remove the tmp folder
+    cd -
+    cp -Rf tmp-$HOSTNAME/* .
+    rm -rf tmp-$HOSTNAME
+   
+    # Install dependencies
     composer --ansi install $INSTALL_FLAGS
     
     # give non-root permissions
