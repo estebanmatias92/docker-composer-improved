@@ -6,8 +6,9 @@ set -e
 if [ ! -s composer.json -a -n "$PROJECT_SOURCE" -a -n "$SOURCE_TYPE" ]; then
 
     # Move to temporary folder to avoid overwriting conflicts
-    mkdir tmp-$HOSTNAME
-    cd tmp-$HOSTNAME
+    tmpFolder="tmp-$HOSTNAME"
+    mkdir $tmpFolder
+    cd $tmpFolder
 
     PWD=$(pwd)
     
@@ -58,8 +59,8 @@ if [ ! -s composer.json -a -n "$PROJECT_SOURCE" -a -n "$SOURCE_TYPE" ]; then
 
     # Return to the root project folder and remove the tmp folder
     cd -
-    cp -Rf tmp-$HOSTNAME/* .
-    rm -rf tmp-$HOSTNAME
+    cp -Rf $tmpFolder/* .
+    rm -rf $tmpfolder
    
     # Install dependencies
     composer --ansi install $INSTALL_FLAGS
