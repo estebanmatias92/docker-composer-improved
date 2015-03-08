@@ -53,20 +53,17 @@ if [ ! -s composer.json -a -n "$PROJECT_SOURCE" -a -n "$SOURCE_TYPE" ]; then
     # Strip first-level folder if exists
     jsonDirectory=$(find $PWD -name composer.json 2>/dev/null | head -n 1 | xargs dirname)
     if [ "$jsonDirectory" != "$PWD" ]; then
-        cp -Rf $jsonDirectory/* $PWD \
+        cp -Rp $jsonDirectory/* $PWD \
         && rm -rf $jsonDirectory
     fi
 
     # Return to the root project folder and remove the tmp folder
     cd -
-    cp -Rf $tmpFolder/* .
+    cp -Rp $tmpFolder/* .
     rm -rf $tmpfolder
    
     # Install dependencies
     composer --ansi install $INSTALL_FLAGS
-    
-    # give non-root permissions
-    chown -R 1000:users .
 fi
 
 # Execute composer anyway.
