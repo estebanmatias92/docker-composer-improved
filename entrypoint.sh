@@ -68,7 +68,7 @@ if [ "$1" = 'composer' ]; then
 
     fi
 
-    exec "$@"
+    exec "$@" --ansi
 
 fi
 
