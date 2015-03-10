@@ -6,11 +6,11 @@ The root of the installed project will be the current workdir.
 
 ## Usage
 
-docker run --rm -e PROJECT_SOURCE=”symfony/symfony” -e PROJECT_VERSION=”~2.6” -e SOURCE_TYPE=”composer” -e PROJECT_FLAGS=”--ignore-platform-reqs” -e INSTALL_FLAGS=”--prefer-dist --ignore-platform-reqs” estebanmatias92/composer-improved validate
+docker run --rm -e PROJECT_SOURCE=”symfony/symfony” -e PROJECT_VERSION=”~2.6” -e SOURCE_TYPE=”composer” -e PROJECT_FLAGS=”--ignore-platform-reqs” -e INSTALL_FLAGS=”--prefer-dist --ignore-platform-reqs” estebanmatias92/composer-improved composer validate
 
 If you dont specifies nothing, the container will work anyways but will not create the project.
 
-docker run --rm estebanmatias92/composer-improved --version
+docker run --rm estebanmatias92/composer-improved composer --version
 
 ## Environment variables
 
